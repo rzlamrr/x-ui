@@ -220,7 +220,7 @@ func (s *TelegramService) StartRun() {
 		//	}
 		case "github":
 			msg.Text = `
-👩🏻‍💻 Here's the link to the project: https://github.com/NidukaAkalanka/x-ui-english/
+👩🏻‍💻 Here's the link to the project: https://github.com/rzlamrr/x-ui/
              
 🖋 Author's Note on V0.2: 
 😶 My schedule is becoming tight so I may not be able to update the project frequently. I'm looking for a contributor who is familiar with Go Telegram Bot API, which is at https://go-telegram-bot-api.dev/ to further improve this Bot. (As you can feel, it's lacking the most user-friendly features like Buttons, Emojis...) If you are interested, please fork the repository and submit a pull request with your changes committed.`

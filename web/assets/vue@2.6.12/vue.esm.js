@@ -5811,7 +5811,7 @@ function registerRef (vnode, isRemoval) {
  * Virtual DOM patching algorithm based on Snabbdom by
  * Simon Friis Vindum (@paldepind)
  * Licensed under the MIT License
- * https://github.com/paldepind/snabbdom/blob/master/LICENSE
+ * https://github.com/paldepind/snabbdom/blob/LICENSE
  *
  * modified by Evan You (@yyx990803)
  *
