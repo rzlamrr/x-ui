@@ -38,7 +38,7 @@ func (j *StatsNotifyJob) Run() {
 		return
 	}
 	var info string
-	info = j.GetsystemStatus()
+	info = j.telegramService.GetsystemStatus()
 	j.telegramService.SendMsgToTgbot(info)
 }
 
@@ -121,37 +121,4 @@ func (j *StatsNotifyJob) SSHStatusLoginNotify(xuiStartTime string) {
 	} else {
 		SSHLoginUser = numberInt
 	}
-}
-
-func (j *StatsNotifyJob) GetsystemStatus() string {
-	var info string
-	//get hostname
-	name, err := os.Hostname()
-	if err != nil {
-		fmt.Println("get hostname error:", err)
-		return ""
-	}
-	info = fmt.Sprintf("Host name: %s\r\n", name)
-	//get ip address
-	var ip string
-	ip = common.GetMyIpAddr()
-	info += fmt.Sprintf("IP address: %s\r\n \r\n", ip)
-
-	//get traffic
-	inbouds, err := j.inboundService.GetAllInbounds()
-	if err != nil {
-		logger.Warning("StatsNotifyJob run failed: ", err)
-		return ""
-	}
-	//NOTE:If there no any sessions here,need to notify here
-	//TODO:Sub -node push, automatic conversion format
-	for _, inbound := range inbouds {
-		info += fmt.Sprintf("Node name: %s\r\n Port: %d\r\n Uplink traffic↑: %s\r\n Downlink traffic↓: %s\r\n Total traffic: %s\r\n", inbound.Remark, inbound.Port, common.FormatTraffic(inbound.Up), common.FormatTraffic(inbound.Down), common.FormatTraffic((inbound.Up + inbound.Down)))
-		if inbound.ExpiryTime == 0 {
-			info += fmt.Sprintf("Understanding time: indefinitely\r\n \r\n")
-		} else {
-			info += fmt.Sprintf("Expire date: %s\r\n \r\n", time.Unix((inbound.ExpiryTime/1000), 0).Format("2006-01-02 15:04:05"))
-		}
-	}
-	return info
 }
