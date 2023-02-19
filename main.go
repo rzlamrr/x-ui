@@ -215,6 +215,8 @@ func main() {
 
 	runCmd := flag.NewFlagSet("run", flag.ExitOnError)
 
+	botCmd := flag.NewFlagSet("bot", flag.ExitOnError)
+
 	v2uiCmd := flag.NewFlagSet("v2-ui", flag.ExitOnError)
 	var dbPath string
 	v2uiCmd.StringVar(&dbPath, "db", "/etc/v2-ui/v2-ui.db", "set v2-ui db file path")
@@ -256,6 +258,28 @@ func main() {
 	}
 
 	switch os.Args[1] {
+	case "bot":
+		err := botCmd.Parse(os.Args[2:])
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		settingService := service.SettingService{}
+		currentTgSts, err := settingService.GetTgbotenabled()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		tgService = service.TelegramService{}
+		if currentTgSts == true {
+			fmt.Println("Starting the bot...")
+			fmt.Println("Send /start to the bot!")
+			tgService.StartRun()
+		} else {
+			fmt.Println("Stopping the bot...")
+			tgService.StopRunAndClose()
+		}
 	case "run":
 		err := runCmd.Parse(os.Args[2:])
 		if err != nil {
